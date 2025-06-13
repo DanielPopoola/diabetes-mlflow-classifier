@@ -104,7 +104,7 @@ diabetes-classification/
 │   ├── models.py         # Training functions
 │   ├── metrics.py        # Metrics calculation
 │   └── preprocessing.py  # Data preprocessing
-├── data/                 # Dataset files
+├── dataset/                 # Dataset files
 ├── requirements.txt      # Python dependencies
 └── README.md            # This file
 ```
