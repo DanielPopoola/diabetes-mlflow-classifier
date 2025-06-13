@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  diabetes-mlflow-classifier:
+    build: .
+    container_name: diabetes-ml-pipeline
+    ports:
+      - "5000:5000"  # MLflow UI
+      - "8888:8888"  # Jupyter Notebook (optional)
+    volumes:
+      - ./mlruns_server:/app/mlruns_server  # Persist MLflow data
+      - ./dataset:/app/dataset                 # Mount data directory
+      - ./notebooks:/app/notebooks          # Mount notebooks for development
+      - ./src:/app/src                      # Mount source code for development
+    environment:
+      - MLFLOW_TRACKING_URI=http://0.0.0.0:5000
+      - PYTHONPATH=/app
+    command: ["/app/start.sh"]
+    restart: unless-stopped
+    
+  # Optional: Separate Jupyter service
+  jupyter:
+    build: .
+    container_name: diabetes-jupyter
+    ports:
+      - "8889:8888"
+    volumes:
+      - ./notebooks:/app/notebooks
+      - ./dataset:/app/dataset
+      - ./src:/app/src
+    environment:
+      - MLFLOW_TRACKING_URI=http://diabetes-mlflow-classifier:5000
+      - PYTHONPATH=/app
+    command: ["/app/start.sh", "jupyter"]
+    depends_on:
+      - diabetes-mlflow-classifier
+    profiles:
+      - jupyter  # Only start with --profile jupyter
+
+networks:
+  default:
+    name: diabetes-ml-network
