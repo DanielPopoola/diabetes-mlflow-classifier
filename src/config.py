@@ -9,7 +9,7 @@ RF_PARAMS = {
 
 # MLflow configuration
 EXPERIMENT_NAME = "Diabetes Binary Classification Comparison"
-TRACKING_URI = "http://127.0.0.1:5000/"
+TRACKING_URI = "http://localhost:5000/"
 
 # Feature configuration
 NUMERIC_FEATURES = [0, 1, 2, 3, 4, 5, 6]
